@@ -1,34 +1,38 @@
 package com.devsuperior.bds04.entities;
 
-import java.util.ArrayList;
-import java.util.List;
+import java.io.Serializable;
+import java.util.HashSet;
 import java.util.Objects;
+import java.util.Set;
 
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
-import javax.persistence.OneToMany;
+import javax.persistence.ManyToMany;
 import javax.persistence.Table;
 
 @Entity
-@Table(name = "tb_city")
-public class City {
-	
+@Table(name = "tb_role")
+
+public class Role implements Serializable {
+	private static final long serialVersionUID = 1L;
+
 	@Id
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
 	private Long id;
-	private String name;
-	
-	@OneToMany(mappedBy = "city")
-	private List<Event> events = new ArrayList<>();
-	
-	public City() {
+	private String authority;
+
+	@ManyToMany(mappedBy = "roles")
+	Set<User> users = new HashSet<>();
+
+	public Role() {
 	}
 
-	public City(Long id, String name) {
+	public Role(Long id, String authority) {
+		super();
 		this.id = id;
-		this.name = name;
+		this.authority = authority;
 	}
 
 	public Long getId() {
@@ -39,16 +43,20 @@ public class City {
 		this.id = id;
 	}
 
-	public String getName() {
-		return name;
+	public String getAuthority() {
+		return authority;
 	}
 
-	public void setName(String name) {
-		this.name = name;
+	public void setAuthority(String authority) {
+		this.authority = authority;
 	}
 
-	public List<Event> getEvents() {
-		return events;
+	public Set<User> getUsers() {
+		return users;
+	}
+
+	public void setUsers(Set<User> users) {
+		this.users = users;
 	}
 
 	@Override
@@ -64,9 +72,8 @@ public class City {
 			return false;
 		if (getClass() != obj.getClass())
 			return false;
-		City other = (City) obj;
+		Role other = (Role) obj;
 		return Objects.equals(id, other.id);
 	}
-	
-	
+
 }
